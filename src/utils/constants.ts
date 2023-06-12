@@ -5,3 +5,9 @@ export enum EnumNotificationType {
     wanning = 'wanning',
     error = 'error'
 }
+
+export const KEY_CONTEXT = {
+    AUTH_TOKEN: 'authToken',
+    LANGUAGE: 'language',
+    USER: 'user',
+};
