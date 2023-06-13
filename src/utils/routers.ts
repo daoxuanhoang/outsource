@@ -1,13 +1,12 @@
-import CustomerPage from "../pages/Customers/Customers"
-import Dashboard from "../pages/Dashboard"
-import { Login } from "../pages/auth/Login"
+import { Control } from "../pages/Control"
+import { DashBoard } from "../pages/Dashboard"
 import { NotFound } from "../pages/notfound"
 
 const routers = [
     {
         path: '/',
         exact: false,
-        main: Dashboard
+        main: DashBoard
     },
     {
         path: '/notfound',
@@ -15,14 +14,9 @@ const routers = [
         main: NotFound
     },
     {
-        path: '/login',
-        exact: true,
-        main: Login
-    },
-    {
-        path: '/customer',
+        path: '/control',
         exact: false,
-        main: CustomerPage
+        main: Control
     }
 ]
 
