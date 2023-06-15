@@ -5,7 +5,7 @@ export default () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: '400px',
+            width: '90%',
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 2,
@@ -15,6 +15,8 @@ export default () => {
             justifyContent: 'space-between',
             alignItems: "center",
         },
-        mR: {marginRight: '8px'}
+        mR: {marginRight: '8px'},
+        mB8: {marginBottom: '8px'},
+        cursor: {cursor: 'pointer'}
     }
 }

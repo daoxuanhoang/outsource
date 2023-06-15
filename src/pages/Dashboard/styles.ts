@@ -14,6 +14,11 @@ export default () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: "center",
+        },
+        bgColor: 'rgba(0, 0, 0, 0.5)',
+        wTable: {
+            width: '50%',
+            height: 400
         }
     }
 }
