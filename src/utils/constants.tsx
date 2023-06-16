@@ -4,7 +4,7 @@ import PestControlIcon from "@mui/icons-material/PestControl";
 export enum EnumNotificationType {
   success = "success",
   info = "info",
-  wanning = "wanning",
+  warning = "warning",
   error = "error",
 }
 

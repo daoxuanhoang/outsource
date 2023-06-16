@@ -1,5 +1,3 @@
-import { IDataStore } from "../app";
-import { IParamsRequest, IResponse } from "../user";
 
 export type ICallback = (results: any) => void;
 
@@ -10,5 +8,6 @@ export interface IPayload {
 
 export interface IActionPayload {
   payload: IPayload;
+  type: string,
   callback?: ICallback;
 }

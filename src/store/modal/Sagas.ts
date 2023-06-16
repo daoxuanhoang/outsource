@@ -12,13 +12,13 @@ function* hideModal() {
 
 
 function* watchShowModalAction() {
-    yield takeEvery(ModalActions.SHOW_MODAL, showModal);
-  }
+  yield takeEvery(ModalActions.SHOW_MODAL, showModal);
+}
 
-  function* watchHideModalAction() {
-    yield takeEvery(ModalActions.HIDE_MODAL, hideModal);
-  }
+function* watchHideModalAction() {
+  yield takeEvery(ModalActions.HIDE_MODAL, hideModal);
+}
 
-  export default function* modalSagas() {
-    yield all([watchShowModalAction(), watchHideModalAction()]);
-  }
+export default function* modalSagas() {
+  yield all([watchShowModalAction(), watchHideModalAction()]);
+}

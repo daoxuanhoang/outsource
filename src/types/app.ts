@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import { IUser } from "./user";
+import { EnumNotificationType } from "../utils";
 
 export interface IRoute {
     path: string,
@@ -20,3 +21,15 @@ export interface IAppState {
     user?: IUser;
     authToken?: string;
 }
+
+export interface INofifyState {
+    message: string;
+    type: keyof typeof EnumNotificationType;
+    options: {
+      position: {
+        vertical: 'top' | 'bottom';
+        horizontal: 'left' | 'center' | 'right';
+      };
+      autoHideDuration: number;
+    };
+  }

@@ -11,10 +11,11 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-
 import createStyles from "./styles";
 import { ItemMenu } from "../../components/ItemMenu";
 import { Menu } from "../../utils";
+import { Avatar } from "@mui/material";
+import AccountMenu from "./Menu";
 
 const drawerWidth: number = 240;
 
@@ -103,6 +104,7 @@ export default function MainLayout({ children }: any) {
           >
             Dashboard
           </Typography>
+          <AccountMenu />
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

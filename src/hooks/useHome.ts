@@ -1,19 +1,26 @@
 import { useCallback } from "react";
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { importXMLActionsRequest } from "store/home";
+import { success } from "store/notify";
+import { IDataStore, INofifyState } from "types";
 
 export function useHome() {
     const dispatch = useDispatch()
+    // const isLoading = useSelector(HomeSelectors.getLoading);
 
-    // const onOpenModal = useCallback(() => {
-    //     dispatch(
-    //       on(
-    //         { formData: GET_MENU_BY_MODULE, dataKey: "users" },
-    //         (result) => {
-    //           dispatch(getDataSuccess({ data: result }));
-    //         }
-    //       )
-    //     );
-    //   }, [dispatch]);
+    const onImportXML = useCallback((payload: any) => {
+        dispatch(
+            importXMLActionsRequest(
+                payload,
+                (result: any) => {
+                    console.log(result);
 
-    return true
+                    // dispatch(importXMLSuccess({ data: result }));
+                    // dispatch(success({ message: "success" } as INofifyState));
+                }
+            )
+        );
+    }, [dispatch]);
+
+    return { onImportXML }
 }

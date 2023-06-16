@@ -1,31 +1,32 @@
-import { takeEvery, put, all, select } from "redux-saga/effects";
-import { HomeActions } from "./Actions";
-import { IActionPayload } from "../../types/apis/api";
-import { actionRequest, importXMLSuccess } from "./Reducers";
+import { all, put, takeEvery } from "redux-saga/effects";
+import { IResponse, IUser } from "../../types/user";
 import { axiosClient } from "../../utils";
-import { IResponse } from "../../types/user";
+import { INofifyState } from "../../types";
+import { error } from "../notify";
+import { HomeActions } from "./Actions";
+import { actionRequest, importXMLSuccess } from "./Reducers";
+import { IActionPayload } from "types/apis/api";
 
-function* onImportXMLRequest(action: IActionPayload) {
+// POST Method
+function* onImportXLMAction(action: IActionPayload) {
+    console.log(action);
+    
     try {
-        yield put(actionRequest());
-        const result: IResponse["result"] = yield axiosClient.post(
-            `${process.env.REACT_APP_GETWAY}`,
-            action
-        )
-        yield put(importXMLSuccess(result))
-        return action?.callback?.(result);
-    } catch (e) {
-
+        yield put(actionRequest())
+        yield put(importXMLSuccess(action))
+    } catch (error) {
+        
     }
+
 }
 
-function* watchImportXLMActions() {
-    yield takeEvery(
-        HomeActions.IMPORT_XML as any,
-        onImportXMLRequest
-    );
+function* watchImportXML() {
+    yield takeEvery(HomeActions.IMPORT_XML, onImportXLMAction);
 }
+
 
 export default function* homeSagas() {
-    yield all([watchImportXLMActions()]);
+    yield all([
+        watchImportXML(),
+    ]);
 }

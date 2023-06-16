@@ -1,22 +1,21 @@
-import {
-  Box,
-  Grid,
-  Typography,
-  Divider,
-  TextField,
-  Button,
-} from "@mui/material";
+import { Box, Grid, Typography, Divider, Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { Modal } from "../Modal";
 import xml2js from "xml2js";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import createStyles from "./styles";
+import { IDataStore } from "../../types";
+import { useHome } from "hooks";
 
 const ImportData = ({ open, onClose }: any) => {
-  const [file, setFile] = React.useState();
-  const [content, setContent] = React.useState();
-  // console.log(content);
+  const [file, setFile] = React.useState("");
+  const { onImportXML } = useHome();
+  // console.log(isLoading);
   
+  const [content, setContent] = React.useState();
+  
+
   const style = createStyles();
 
   const parser = xml2js.parseString;
@@ -24,18 +23,22 @@ const ImportData = ({ open, onClose }: any) => {
 
   const changeHandler = (e: any) => {
     setFile(e.target.files[0]);
-    // console.log(e.target.files[0]);
+    console.log(e.target.files[0]);
+    
   };
 
   const submitHandler = (e: any) => {
-    e.preventDefault();
-    reader.readAsText(file as any);
-    reader.onloadend = (evt: any) => {
-      const readerData = evt.target.result;
-      parser(readerData, (err: any, result: any) => {
-        setContent(result);
-      });
-    };
+    // e.preventDefault();
+    // reader.readAsText(file as any);
+    // reader.onloadend = (evt: any) => {
+    //   const readerData = evt.target.result;
+    //   parser(readerData, (err: any, result: any) => {
+    //     setContent(result);
+    //   });
+    // };
+    onImportXML(file);
+    // setFile("");
+    // onClose && onClose();
   };
 
   return (
@@ -59,7 +62,7 @@ const ImportData = ({ open, onClose }: any) => {
           rowSpacing={1}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
-          <Grid item sx={{ marginTop: "16px", width:'100%' }}>
+          <Grid item sx={{ marginTop: "16px", width: "100%" }}>
             <form>
               <input
                 id="upload"
@@ -69,12 +72,18 @@ const ImportData = ({ open, onClose }: any) => {
               />
             </form>
           </Grid>
-          <Grid item sx={{width:'100%'}}>
-          </Grid>
+          <Grid item sx={{ width: "100%" }}></Grid>
         </Grid>
         <Divider sx={{ marginTop: "16px" }} />
         <Box sx={{ marginTop: "16px", display: "flex", justifyContent: "end" }}>
-          <Button variant="contained" onClick={submitHandler}>Lưu dữ liệu</Button>
+          <LoadingButton
+            variant="contained"
+            onClick={submitHandler}
+            // loading={isLoading}
+            disabled={!file}
+          >
+            Lưu dữ liệu
+          </LoadingButton>
         </Box>
       </Box>
     </Modal>

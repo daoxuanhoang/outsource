@@ -1,12 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { IDataStore } from "../../types/app";
+import { IAppState } from "../../types";
 
-const selector = (state: { home: IDataStore }) => state.home;
-export const getError = createSelector(selector, ({ error }: any) => error);
 
-export const getLoading = createSelector(
-  selector,
-  ({ loading }: any) => loading
-);
+const selector = (state: { user: IAppState }) => state.user;
 
-export const getUsers = createSelector(selector, (home) => home.data);
+export const getError = createSelector(selector, ({ error }: IAppState) => error);
+
+export const getAuthUser = createSelector(selector, app => app?.user);
+
+export const getLoading = createSelector(selector, ({ loading }: IAppState) => loading);
