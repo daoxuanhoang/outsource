@@ -14,7 +14,7 @@ const homeSlice = createSlice({
             return {
                 ...state,
                 error: null,
-                loading: false
+                loading: true
             }
         },
         importXMLSuccess: (state, { payload }) => {
@@ -25,7 +25,7 @@ const homeSlice = createSlice({
                 loading: false
             }
         },
-        importXMLFailure: (state, { payload }: any) => {
+        importXMLFailure: (state, { payload }) => {
             return {
                 ...state,
                 error: payload,

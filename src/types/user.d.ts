@@ -15,7 +15,6 @@ export interface IRSResult {
 }
 
 export interface IResponse {
-    action: string;
     method: string;
     result: IRSResult;
 }

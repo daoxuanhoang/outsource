@@ -102,7 +102,7 @@ export default function MainLayout({ children }: any) {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Dashboard
+            {/* Dữ liệu lần đầu */}
           </Typography>
           <AccountMenu />
         </Toolbar>
@@ -133,7 +133,7 @@ export default function MainLayout({ children }: any) {
               ? theme.palette.grey[100]
               : theme.palette.grey[900],
           flexGrow: 1,
-          height: "100vh",
+          height: "calc(100vh - 60px)",
           overflow: "auto",
           marginTop: "60px",
           padding: "16px",

@@ -17,4 +17,4 @@ const Text: FC<IText> = ({ children, ...props }) => {
   );
 };
 
-export default memo(Text, areEqual);
+export default memo(Text);

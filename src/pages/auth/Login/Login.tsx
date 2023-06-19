@@ -38,7 +38,7 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
-  const { onLogin, checkAuth } = useUser();
+  const { onLogin } = useUser();
   const handleSubmit = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();

@@ -1,9 +1,10 @@
 import { useCallback } from "react"
 import { useDispatch } from "react-redux"
 import { KEY_CONTEXT } from "../utils"
-import { ILogin } from "../types"
+import { ILogin, INofifyState } from "../types"
 import { loginActionRequest, loginSuccess, logoutRequest } from "../store/user"
 import { useKey } from "./useKey"
+import { error } from "store/notify"
 
 export function useUser() {
     const dispatch = useDispatch()
@@ -25,9 +26,13 @@ export function useUser() {
                 //     // }
                 // }))
             }
-        } catch (error) {
-            console.log(error);
+            else {
+                dispatch(error({ message: 'Sai tai khoan MK' } as INofifyState))
+            }
 
+        } catch (e) {
+            console.log(e);
+            dispatch(error({ message: e } as INofifyState))
         }
     }, [])
 

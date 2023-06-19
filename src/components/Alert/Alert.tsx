@@ -5,7 +5,7 @@ import React, { memo } from "react";
 import { useSelector } from "react-redux";
 import { useNotify } from "../../hooks";
 import { NotifySelectors } from "../../store/notify";
-import Text from "../Text/Text";
+import { Text } from "components/Text";
 
 const Alert = () => {
   const { hide } = useNotify();

@@ -5,16 +5,19 @@ import xml2js from "xml2js";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import createStyles from "./styles";
-import { IDataStore } from "../../types";
+import { IDataStore, INofifyState } from "../../types";
 import { useHome } from "hooks";
+import { ButtonCus } from "components/Button";
+import { Text } from "components/Text";
+import { error } from "store/notify";
+import { useDispatch } from "react-redux";
 
 const ImportData = ({ open, onClose }: any) => {
   const [file, setFile] = React.useState("");
-  const { onImportXML } = useHome();
-  // console.log(isLoading);
-  
+  const { onImportXML, isLoading } = useHome();
+  const dispatch = useDispatch();
+
   const [content, setContent] = React.useState();
-  
 
   const style = createStyles();
 
@@ -24,21 +27,25 @@ const ImportData = ({ open, onClose }: any) => {
   const changeHandler = (e: any) => {
     setFile(e.target.files[0]);
     console.log(e.target.files[0]);
-    
   };
 
   const submitHandler = (e: any) => {
-    // e.preventDefault();
-    // reader.readAsText(file as any);
-    // reader.onloadend = (evt: any) => {
-    //   const readerData = evt.target.result;
-    //   parser(readerData, (err: any, result: any) => {
-    //     setContent(result);
-    //   });
-    // };
-    onImportXML(file);
-    // setFile("");
-    // onClose && onClose();
+    e.preventDefault();
+    if (!file) {
+      dispatch(error({ message: "Chưa chọn file" } as INofifyState));
+      return;
+    } else {
+      // reader.readAsText(file as any);
+      // reader.onloadend = (evt: any) => {
+      //   const readerData = evt.target.result;
+      //   parser(readerData, (err: any, result: any) => {
+      //     setContent(result);
+      //   });
+      // };
+      onImportXML(file);
+      setFile("");
+      onClose && onClose();
+    }
   };
 
   return (
@@ -76,14 +83,9 @@ const ImportData = ({ open, onClose }: any) => {
         </Grid>
         <Divider sx={{ marginTop: "16px" }} />
         <Box sx={{ marginTop: "16px", display: "flex", justifyContent: "end" }}>
-          <LoadingButton
-            variant="contained"
-            onClick={submitHandler}
-            // loading={isLoading}
-            disabled={!file}
-          >
+          <ButtonCus variant="contained" onClick={submitHandler}>
             Lưu dữ liệu
-          </LoadingButton>
+          </ButtonCus>
         </Box>
       </Box>
     </Modal>

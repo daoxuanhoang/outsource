@@ -1,24 +1,52 @@
 import * as React from "react";
-import {
-  DataGrid
-} from "@mui/x-data-grid";
-import { Box } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import { Grid } from "@mui/material";
+import createStyles from "./styles";
 
+const DataTable = React.forwardRef<any, any>(function Table(
+  {
+    containerStyle,
+    sx,
+    columns,
+    rows,
+    page = 0,
+    perPage = 10,
+    hideFooterPagination = true,
+    checkboxSelection = false,
+    hideFooter = true,
+    hideFooterSelectedRowCount = true,
+    ...props
+  },
+  ref
+) {
+  const styles = createStyles();
+  const styleOverrides = sx || {};
+  const handlePaginationModelChange = (newModel: any) => {
+    const { pageSize, page } = newModel;
+  };
 
-export default function DataTable({columns, rows, ...props}: any) {
   return (
-    <Box sx={[props?.sx || {}]}>
+    <Grid sx={[styles.wrapTableContent, containerStyle || {}]}>
       <DataGrid
-        rows={rows}
+        ref={ref}
+        sx={{ ...styles.defaultStyles, ...styleOverrides }}
+        rows={rows?.map((item: any, idx: string) => ({ ...item, id: idx + 1 }))}
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+            paginationModel: { page: page, pageSize: perPage },
           },
         }}
-        pageSizeOptions={[5, 10, 20, 50, 100]}
-        checkboxSelection
+        pageSizeOptions={[10, 20, 50, 100]}
+        checkboxSelection={checkboxSelection}
+        hideFooterPagination={hideFooterPagination}
+        hideFooterSelectedRowCount={hideFooterSelectedRowCount}
+        hideFooter={hideFooter}
+        onPaginationModelChange={handlePaginationModelChange}
+        {...props}
       />
-    </Box>
+    </Grid>
   );
-}
+});
+
+export default React.memo(DataTable);

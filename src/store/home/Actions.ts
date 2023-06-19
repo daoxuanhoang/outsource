@@ -1,5 +1,4 @@
 import { IActionPayload } from "types/apis/api";
-import { IParamsRequest } from "../../types/user";
 
 
 export const HomeActions = {

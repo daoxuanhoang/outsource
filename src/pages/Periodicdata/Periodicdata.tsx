@@ -6,16 +6,14 @@ import createStyles from "./styles";
 import { ImportData } from "../../components/ImportData";
 import DataTable from "../../components/Table/Table";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { useDispatch } from "react-redux";
 import { useModal } from "../../hooks/useModal";
-import { Modal } from "../../components/Modal";
 import { DetailXML } from "../../components/DetailXML";
 import { ButtonCus } from "components/Button";
-import { Text } from "components/Text";
 import moment from "moment";
 import { ValidateDate } from "utils";
+import { Text } from "components/Text";
 
-const Dashboard = () => {
+const Periodicdata = () => {
   const [open, setOpen] = React.useState(false);
   const { showModal, hideModal, isOpen } = useModal();
   const [state, setState] = React.useState({
@@ -97,8 +95,13 @@ const Dashboard = () => {
   };
 
   React.useEffect(() => {
-    if (ValidateDate(state.startDate)) console.log("222");
-  }, [state.startDate]);
+    if (
+      ValidateDate(state.startDate) &&
+      ValidateDate(state.endDate) &&
+      moment(state.startDate).isBefore(state.endDate)
+    )
+      console.log("222");
+  }, [state.startDate, state.endDate]);
 
   return (
     <MainLayout
@@ -124,22 +127,32 @@ const Dashboard = () => {
                 width: "100%",
               }}
             >
-              <TextField
-                size="small"
-                type="date"
-                sx={{ marginRight: "16px", width: "20%" }}
-                value={state.startDate}
-                name="startDate"
-                onChange={handleChange}
-              />
-              <TextField
-                size="small"
-                type="date"
-                sx={{ width: "20%" }}
-                value={state.endDate}
-                name="endDate"
-                onChange={handleChange}
-              />
+              <Box sx={{ marginRight: "16px", flex: 0.2, position:'relative' }}>
+                <TextField
+                  size="small"
+                  type="date"
+                  value={state.startDate}
+                  sx={{width: '100%'}}
+                  name="startDate"
+                  onChange={handleChange}
+                />
+                {state.startDate && state.endDate && !moment(state.startDate).isBefore(state.endDate) && (
+                  <Text color="red" sx={{position: 'absolute', zIndex: 999}}>Ngày bắt đầu phải nhỏ hơn ngày kết thúc</Text>
+                )}
+                {(!state.startDate && state.endDate) || (state.startDate && !state.endDate)  && (
+                  <Text color="red" sx={{position: 'absolute', zIndex: 999}}>Bạn phải chọn ngày bắt đầu và ngày kết thúc</Text>
+                )}
+              </Box>
+              <Box sx={{ flex: 0.2 }}>
+                <TextField
+                  size="small"
+                  type="date"
+                  sx={{width: '100%'}}
+                  value={state.endDate}
+                  name="endDate"
+                  onChange={handleChange}
+                />
+              </Box>
             </Grid>
           </Grid>
           <ImportData open={open} onClose={() => handleClose()} />
@@ -159,4 +172,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Periodicdata;

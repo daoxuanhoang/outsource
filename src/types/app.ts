@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { IUser } from "./user";
-import { EnumNotificationType } from "../utils";
+import { EnumNotificationType, EnumValueType } from "../utils";
 
 export interface IRoute {
     path: string,
@@ -9,7 +9,7 @@ export interface IRoute {
 }
 
 export interface IDataStore {
-    isLoading?: boolean;
+    loading?: boolean;
     data?: any;
     error?: string | null;
 }
@@ -33,3 +33,5 @@ export interface INofifyState {
       autoHideDuration: number;
     };
   }
+
+  export type IValueType = keyof typeof EnumValueType;

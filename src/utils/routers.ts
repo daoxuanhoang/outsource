@@ -1,3 +1,4 @@
+import { Periodicdata } from "pages/Periodicdata"
 import { Control } from "../pages/Control"
 import { DashBoard } from "../pages/Dashboard"
 import { NotFound } from "../pages/notfound"
@@ -17,6 +18,11 @@ const routers = [
         path: '/control',
         exact: false,
         main: Control
+    },
+    {
+        path: '/periodicdata',
+        exact: false,
+        main: Periodicdata
     }
 ]
 
