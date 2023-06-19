@@ -1,26 +1,20 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-import { routers } from "./utils";
-import { IRoute } from "./types/app";
-import { useUser } from "./hooks/useUser";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Login } from "./pages/auth/Login";
+import { PrivateRoute } from "./components/common/PrivateRoute";
+import Dashboard from "./pages/Dashboard/DashBoard";
+import { IRoute } from "./types";
+import { routers } from "./utils";
 
 function App() {
-  const { checkAuth } = useUser();
   return (
     <Router>
       <div className="App">
         <Routes>
-          {/* {localStorage.getItem("user") === null ? (
-            <Route path="/login" index={true} element={<Login />} />
-          ) : ( */}
+          <Route path="/login" index={true} element={<Login />} />
+          <Route path={"/"} element={<PrivateRoute />}>
             {showContentMenu(routers)}
-          {/* )} */}
+          </Route>
         </Routes>
       </div>
     </Router>

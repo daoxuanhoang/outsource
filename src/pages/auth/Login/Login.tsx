@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Navigate } from "react-router-dom";
 import { useUser } from "../../../hooks/useUser";
-import Dashboard from "../../Dashboard";
+import Dashboard from "../../Dashboard/DashBoard";
 
 function Copyright(props: any) {
   return (
@@ -38,7 +38,7 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
-  const { onLogin, checkAuth } = useUser();
+  const { onLogin } = useUser();
   const handleSubmit = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -116,10 +116,6 @@ export default function LoginPage() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
               <Button
                 type="submit"
                 fullWidth
@@ -128,18 +124,6 @@ export default function LoginPage() {
               >
                 Sign In
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
