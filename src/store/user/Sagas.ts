@@ -11,19 +11,19 @@ function* loginRequest(action: any) {
     console.log(action);
 
     try {
-        const result: IResponse["result"] = yield axiosClient.post(
+        const res: IResponse = yield axiosClient.post(
             `http://`,
             JSON.stringify(action.formData)
         )
 
-        if (result?.success) {
-            const user: IUser = result.data;
+        if (res?.success) {
+            const user = res.data;
             yield put(loginSuccess(user as any));
-            return action.callback?.(result);
+            return action.callback?.(res);
 
         }
 
-        yield put(loginFailure(result?.message as any));
+        yield put(loginFailure(res?.message as any));
         yield put(error({ message: 'lỗi' } as INofifyState));
     } catch (err: any) {
         yield put(loginFailure(err));

@@ -1,9 +1,8 @@
 import React from "react";
-import { Grid, Box, TextField } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 
 import { MainLayout } from "../../layouts/MainLayout";
 import createStyles from "./styles";
-import { ImportData } from "../../components/ImportData";
 import DataTable from "../../components/Table/Table";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useModal } from "../../hooks/useModal";
@@ -12,9 +11,9 @@ import { ButtonCus } from "components/Button";
 import moment from "moment";
 import { ValidateDate } from "utils";
 import { Text } from "components/Text";
+import { DatePicker } from "components/DatePicker";
 
 const Periodicdata = () => {
-  const [open, setOpen] = React.useState(false);
   const { showModal, hideModal, isOpen } = useModal();
   const [state, setState] = React.useState({
     startDate: null,
@@ -22,13 +21,6 @@ const Periodicdata = () => {
   });
 
   const style = createStyles();
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const columns: GridColDef[] = [
     {
@@ -87,11 +79,8 @@ const Periodicdata = () => {
     { id: 12, lastName: "Roxie", firstName: "Harvey", age: 65 },
   ];
 
-  const handleChange = ({ target }: any) => {
-    setState((s) => ({
-      ...s,
-      [target.name]: moment(target.value).format("YYYY-MM-DD"),
-    }));
+  const handleChange = (name: string) => (newValue: any) => {
+    setState((s) => ({ ...s, [name]: newValue?.$d }));
   };
 
   React.useEffect(() => {
@@ -102,6 +91,8 @@ const Periodicdata = () => {
     )
       console.log("222");
   }, [state.startDate, state.endDate]);
+
+  
 
   return (
     <MainLayout
@@ -116,9 +107,6 @@ const Periodicdata = () => {
               width: "100%",
             }}
           >
-            <ButtonCus variant="contained" onClick={handleClickOpen}>
-              Import
-            </ButtonCus>
             <Grid
               sx={{
                 display: "flex",
@@ -127,35 +115,43 @@ const Periodicdata = () => {
                 width: "100%",
               }}
             >
-              <Box sx={{ marginRight: "16px", flex: 0.2, position:'relative' }}>
-                <TextField
-                  size="small"
-                  type="date"
+              <Box
+                sx={{ marginRight: "16px", flex: 0.2, position: "relative" }}
+              >
+                <DatePicker
                   value={state.startDate}
-                  sx={{width: '100%'}}
-                  name="startDate"
-                  onChange={handleChange}
+                  onChange={handleChange("startDate")}
                 />
-                {state.startDate && state.endDate && !moment(state.startDate).isBefore(state.endDate) && (
-                  <Text color="red" sx={{position: 'absolute', zIndex: 999}}>Ngày bắt đầu phải nhỏ hơn ngày kết thúc</Text>
-                )}
-                {(!state.startDate && state.endDate) || (state.startDate && !state.endDate)  && (
-                  <Text color="red" sx={{position: 'absolute', zIndex: 999}}>Bạn phải chọn ngày bắt đầu và ngày kết thúc</Text>
-                )}
+                {state.startDate &&
+                  state.endDate &&
+                  !moment(
+                    moment(state.startDate).format("YYYY-MM-DD")
+                  ).isSameOrBefore(moment(state.endDate).format("YYYY-MM-DD")) && (
+                    <Text
+                      color="red"
+                      sx={{ position: "absolute", zIndex: 999 }}
+                    >
+                      Ngày bắt đầu phải nhỏ hơn ngày kết thúc
+                    </Text>
+                  )}
+                {(!state.startDate && state.endDate) ||
+                  (state.startDate && !state.endDate && (
+                    <Text
+                      color="red"
+                      sx={{ position: "absolute", zIndex: 999 }}
+                    >
+                      Bạn phải chọn ngày bắt đầu và ngày kết thúc
+                    </Text>
+                  ))}
               </Box>
               <Box sx={{ flex: 0.2 }}>
-                <TextField
-                  size="small"
-                  type="date"
-                  sx={{width: '100%'}}
+                <DatePicker
                   value={state.endDate}
-                  name="endDate"
-                  onChange={handleChange}
+                  onChange={handleChange("endDate")}
                 />
               </Box>
             </Grid>
           </Grid>
-          <ImportData open={open} onClose={() => handleClose()} />
           <Grid item xs={12}>
             <DataTable
               rows={rows}
