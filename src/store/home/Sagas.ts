@@ -12,7 +12,6 @@ function* onImportXLMAction(action: IActionPayload) {
     try {
         yield put(actionRequest())
         console.log('sss');
-
         yield put(importXMLSuccess(action))
         yield put(success({ message: 'success' } as INofifyState))
     } catch (error) {

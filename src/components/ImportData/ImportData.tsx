@@ -5,16 +5,17 @@ import xml2js from "xml2js";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import createStyles from "./styles";
-import { IDataStore, INofifyState } from "../../types";
-import { useHome } from "hooks";
+import { IDataStore, IModal, INofifyState } from "../../types";
+import { useHome, useModal } from "hooks";
 import { ButtonCus } from "components/Button";
 import { Text } from "components/Text";
 import { error } from "store/notify";
 import { useDispatch } from "react-redux";
+import { UploadDropzone } from "components/UploadDropzone";
 
-const ImportData = ({ open, onClose }: any) => {
-  const [file, setFile] = React.useState("");
-  const { onImportXML, isLoading } = useHome();
+const ImportData = ({ open, onClose }: IModal) => {
+  const [myFiles, setMyFiles] = React.useState([]);
+  const { onImportXML } = useHome();
   const dispatch = useDispatch();
 
   const [content, setContent] = React.useState();
@@ -24,37 +25,39 @@ const ImportData = ({ open, onClose }: any) => {
   const parser = xml2js.parseString;
   const reader = new FileReader();
 
-  const changeHandler = (e: any) => {
-    setFile(e.target.files[0]);
-    console.log(e.target.files[0]);
+  const changeHandler = (file: any) => {
+    setMyFiles([...myFiles, ...file] as any);
+  };
+
+  const removeFile = (file: any) => {
+    setMyFiles(myFiles.filter((f: any) => f?.name !== file?.name));
+  };
+
+  const removeAll = () => {
+    setMyFiles([]);
   };
 
   const submitHandler = (e: any) => {
     e.preventDefault();
-    if (!file) {
+    if (!myFiles.length) {
       dispatch(error({ message: "Chưa chọn file" } as INofifyState));
       return;
     } else {
-      // reader.readAsText(file as any);
+      // reader.readAsText(myFiles[0] as any);
       // reader.onloadend = (evt: any) => {
       //   const readerData = evt.target.result;
       //   parser(readerData, (err: any, result: any) => {
       //     setContent(result);
       //   });
       // };
-      onImportXML(file);
-      setFile("");
+      onImportXML(myFiles);
+      setMyFiles([]);
       onClose && onClose();
     }
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="customized-dialog-title"
-      direction={"up"}
-    >
+    <Modal open={open} onClose={onClose} aria-labelledby="customized-dialog-title" direction={"up"}>
       <Box sx={style.container}>
         <Grid sx={style.flexCenter}>
           <Typography id="modal-modal-title" variant="h6">
@@ -63,21 +66,9 @@ const ImportData = ({ open, onClose }: any) => {
           <CloseIcon onClick={onClose} />
         </Grid>
         <Divider />
-        <Grid
-          container
-          spacing={2}
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        >
+        <Grid container spacing={2} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item sx={{ marginTop: "16px", width: "100%" }}>
-            <form>
-              <input
-                id="upload"
-                type="file"
-                accept="text/xml, application/xml"
-                onChange={changeHandler}
-              />
-            </form>
+            <UploadDropzone onChange={changeHandler} myFiles={myFiles} removeAll={removeAll} removeFile={removeFile}/>
           </Grid>
           <Grid item sx={{ width: "100%" }}></Grid>
         </Grid>

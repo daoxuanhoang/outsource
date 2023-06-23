@@ -11,6 +11,8 @@ import { useModal } from "../../hooks/useModal";
   
   const DetailXML = ({ open, onClose }: any) => {
     const {content} = useModal()
+
+    
     const style = createStyles();
     return (
       <Modal

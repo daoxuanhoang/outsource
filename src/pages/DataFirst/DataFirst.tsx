@@ -1,14 +1,11 @@
 import React from "react";
-import { Grid, Box, TextField } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 
 import { MainLayout } from "../../layouts/MainLayout";
 import createStyles from "./styles";
-import { ImportData } from "../../components/ImportData";
 import DataTable from "../../components/Table/Table";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { useDispatch } from "react-redux";
 import { useModal } from "../../hooks/useModal";
-import { Modal } from "../../components/Modal";
 import { DetailXML } from "../../components/DetailXML";
 import { ButtonCus } from "components/Button";
 import { Text } from "components/Text";
@@ -16,8 +13,7 @@ import moment from "moment";
 import { EnumMaKH, ValidateDate } from "utils";
 import { DatePicker } from "components/DatePicker";
 
-const Dashboard = () => {
-  const [open, setOpen] = React.useState(false);
+const DataFirst = () => {
   const { showModal, hideModal, isOpen } = useModal();
   const [state, setState] = React.useState({
     startDate: null,
@@ -25,13 +21,6 @@ const Dashboard = () => {
   });
 
   const style = createStyles();
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const columns: GridColDef[] = [
     {
@@ -207,9 +196,6 @@ const Dashboard = () => {
               width: "100%",
             }}
           >
-            <ButtonCus variant="contained" onClick={handleClickOpen}>
-              Import
-            </ButtonCus>
             <Grid
               sx={{
                 display: "flex",
@@ -237,7 +223,6 @@ const Dashboard = () => {
               </Box>
             </Grid>
           </Grid>
-          <ImportData open={open} onClose={() => handleClose()} />
           <Grid item xs={12}>
             <DataTable rows={rows} columns={columns} sx={style.wTable} hideFooterPagination={false} hideFooter={false} />
           </Grid>
@@ -248,4 +233,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DataFirst;

@@ -1,10 +1,8 @@
 /** @format */
 
-import { useKey } from 'hooks';
 import theme from 'theme/themes';
 
 export default () => {
-  const { getKey } = useKey();
   return {
     base: { textTransform: 'unset', minWidth: 120, maxHeight: 30 },
     contained: {

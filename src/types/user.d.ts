@@ -8,17 +8,20 @@ export interface IParamsRequest {
     tid: number;
 }
 
-export interface IRSResult {
-    success: boolean;
-    message: string;
-    data: any;
+export interface IRSResult {  
+    data: any,
+    total: number,
+    page: number,
+    pageSize: number,
 }
 
 export interface IResponse {
-    method: string;
-    result: IRSResult;
+    success: boolean;
+    message: string;
+    data: IRSResult;
 }
 
 export interface IUser {
-    name: string
+    name: string,
+    data: any
 }

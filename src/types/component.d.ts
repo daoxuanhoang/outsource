@@ -1,25 +1,32 @@
-import { Theme, SxProps } from "@mui/system";
+import { Theme, SxProps, } from "@mui/system";
 import { ButtonProps, ModalTypeMap, TypographyProps } from '@mui/material';
 import { SVGProps } from "react";
 import { DataGridProps } from "@mui/x-data-grid";
+import { DatePickerProps } from "@mui/lab";
 
-
+export type TDate = Date;
 export type ISXTheme = SxProps<Theme>;
 export type IModalInit = ModalTypeMap['props'];
+export type IDatePickerInit = DatePickerProps<TDate>;
 export type ITextInit = TypographyProps;
 
 
 export type IModal = IModalInit & {
-    direction?: 'right' | 'left' | 'up' | 'down';
-    onClose?: () => void;
+  direction?: 'right' | 'left' | 'up' | 'down';
+  onClose?: () => void;
 };
 
-export interface IText extends ITextInit {
-    children?: string;
-    color?: any;
-  }
+export type IDatePicker = IDatePickerInit & {
+  value: TDate,
+  onChange: (date: Date | null) => void;
+}
 
-  export type IButtonVariantStyle =
+export interface IText extends ITextInit {
+  children?: string;
+  color?: any;
+}
+
+export type IButtonVariantStyle =
   | 'cancel'
   | 'error'
   | 'info'
@@ -39,31 +46,31 @@ export type IButtonIconType =
   | 'add'
   | 'ok';
 
-  export type ISVGIconWrap = React.SVGProps<SVGSVGElement> & {
-    children?: JSX.Element | JSX.Element[];
-    size?: number;
-    wrapColor?: string;
-    width?: number;
-    height?: number;
-  };
+export type ISVGIconWrap = React.SVGProps<SVGSVGElement> & {
+  children?: JSX.Element | JSX.Element[];
+  size?: number;
+  wrapColor?: string;
+  width?: number;
+  height?: number;
+};
 
-  export type ISVGIcon = SVGProps<SVGPathElement> &
+export type ISVGIcon = SVGProps<SVGPathElement> &
   ISVGIconWrap & {
     color?: string;
   };
 
-  export type IButtonIcon = ISVGIcon & {
-    variant?: IButtonIconType;
-  };
+export type IButtonIcon = ISVGIcon & {
+  variant?: IButtonIconType;
+};
 
-  export type IButton = ButtonProps & {
-    variantStyle?: IButtonVariantStyle;
-    title?: string;
-    variantTitle?: IText['variant'];
-    LabelProps?: IText;
-    iconProps?: IButtonIcon;
-  };
+export type IButton = ButtonProps & {
+  variantStyle?: IButtonVariantStyle;
+  title?: string;
+  variantTitle?: IText['variant'];
+  LabelProps?: IText;
+  iconProps?: IButtonIcon;
+};
 
-  // DataGrid
+// DataGrid
 export type IDataTable = DataGridProps<any> &
-React.RefAttributes<HTMLDivElement> & { containerStyle?: ISXTheme };
+  React.RefAttributes<HTMLDivElement> & { containerStyle?: ISXTheme };
