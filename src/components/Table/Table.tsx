@@ -11,9 +11,10 @@ const DataTable = React.forwardRef<any, any>(function Table(
     rows,
     page = 0,
     perPage = 10,
-    hideFooterPagination = true,
+    loading,
+    hideFooterPagination = false,
     checkboxSelection = false,
-    hideFooter = true,
+    hideFooter = false,
     hideFooterSelectedRowCount = true,
     ...props
   },
@@ -42,6 +43,7 @@ const DataTable = React.forwardRef<any, any>(function Table(
         hideFooterPagination={hideFooterPagination}
         hideFooterSelectedRowCount={hideFooterSelectedRowCount}
         hideFooter={hideFooter}
+        loading={loading}
         onPaginationModelChange={handlePaginationModelChange}
         {...props}
       />

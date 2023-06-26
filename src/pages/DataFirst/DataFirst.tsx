@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Skeleton } from "@mui/material";
 
 import { MainLayout } from "../../layouts/MainLayout";
 import createStyles from "./styles";
@@ -12,6 +12,7 @@ import { Text } from "components/Text";
 import moment from "moment";
 import { EnumMaKH, ValidateDate } from "utils";
 import { DatePicker } from "components/DatePicker";
+import { LoadingSkeleton } from "components/LoadingSkeleton";
 
 const DataFirst = () => {
   const { showModal, hideModal, isOpen } = useModal();
@@ -19,6 +20,9 @@ const DataFirst = () => {
     startDate: null,
     endDate: null,
   });
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  console.log(loading);
 
   const style = createStyles();
 
@@ -106,104 +110,31 @@ const DataFirst = () => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      mst: "12222222",
-      Ma_loai_GD: "1",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 2,
-      mst: "12222222",
-      Ma_loai_GD: "2",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 3,
-      mst: "12222222",
-      Ma_loai_GD: "3",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 4,
-      mst: "12222222",
-      Ma_loai_GD: "2",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 5,
-      mst: "12222222",
-      Ma_loai_GD: "2",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 6,
-      mst: "12222222",
-      Ma_loai_GD: "2",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-  ];
-
   const handleChange = (name: string) => (newValue: any) => {
     setState((s) => ({ ...s, [name]: newValue?.$d }));
   };
 
-  // React.useEffect(() => {
-  //   if (ValidateDate(state.startDate)) console.log("222");
-  // }, [state.startDate]);
+  React.useEffect(() => {
+    setLoading(true);
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-  // console.log(state.startDate &&
-  //   state.endDate &&
-  //   moment(moment(state.startDate).format("YYYY-MM-DD")).isBefore(
-  //     moment(state.endDate).format("YYYY-MM-DD")
-  //   ) );
+  // React.useEffect(() => {
+  //   if (ValidateDate(state.startDate) && ValidateDate(state.endDate)) console.log("222");
+  // }, [state.startDate, state.endDate]);
 
   return (
     <MainLayout
       children={
         <>
-          <Grid
-            sx={{
-              marginBottom: "16px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Grid
-              sx={{
-                display: "flex",
-                justifyContent: "end",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
+          <Grid sx={style.container}>
+            <Grid sx={style.container.item}>
               <Box sx={{ marginRight: "16px", flex: 0.2, position: "relative" }}>
                 <DatePicker value={state.startDate} onChange={handleChange("startDate")} />
                 {state.startDate && state.endDate && !moment(moment(state.startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(state.endDate).format("YYYY-MM-DD")) && (
@@ -224,7 +155,15 @@ const DataFirst = () => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <DataTable rows={rows} columns={columns} sx={style.wTable} hideFooterPagination={false} hideFooter={false} />
+            <DataTable
+              rows={data}
+              columns={columns}
+              sx={style.wTable}
+              components={{
+                LoadingOverlay: LoadingSkeleton,
+              }}
+              loading={true}
+            />
           </Grid>
           {isOpen && <DetailXML open={isOpen} onClose={() => hideModal()} />}
         </>
