@@ -5,7 +5,7 @@ import { IDataStore } from "types";
 const homeSlice = createSlice({
     name: 'home',
     initialState: {
-        loading: false,
+        loading: true,
         error: null,
         data: null
     },
@@ -31,10 +31,17 @@ const homeSlice = createSlice({
                 error: payload,
                 loading: false
             }
+        },
+        onGetDataSuccess: (state, { payload }) => {
+            return {
+                ...state,
+                data: payload,
+                loading: false
+            }
         }
     }
 })
 
-export const { actionRequest, importXMLSuccess, importXMLFailure } = homeSlice.actions
+export const { actionRequest, importXMLSuccess, importXMLFailure, onGetDataSuccess } = homeSlice.actions
 
 export default homeSlice.reducer

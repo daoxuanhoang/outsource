@@ -8,11 +8,12 @@ export interface IParamsRequest {
     tid: number;
 }
 
-export interface IRSResult {  
-    data: any,
+export interface IRSResult {
+    result: any,
     total: number,
+    limit: number,
     page: number,
-    pageSize: number,
+    pages: number,
 }
 
 export interface IResponse {

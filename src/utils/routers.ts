@@ -32,7 +32,7 @@ const routers = [
         main: Control
     },
     {
-        path: '/periodicdata',
+        path: '/datacurrent',
         exact: false,
         main: Periodicdata
     }

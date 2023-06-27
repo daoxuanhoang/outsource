@@ -11,7 +11,7 @@ const DataTable = React.forwardRef<any, any>(function Table(
     rows,
     page = 0,
     perPage = 10,
-    loading,
+    loading = false,
     hideFooterPagination = false,
     checkboxSelection = false,
     hideFooter = false,

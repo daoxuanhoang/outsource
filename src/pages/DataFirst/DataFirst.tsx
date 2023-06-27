@@ -13,84 +13,47 @@ import moment from "moment";
 import { EnumMaKH, ValidateDate } from "utils";
 import { DatePicker } from "components/DatePicker";
 import { LoadingSkeleton } from "components/LoadingSkeleton";
+import { useHome } from "hooks";
 
 const DataFirst = () => {
   const { showModal, hideModal, isOpen } = useModal();
-  const [state, setState] = React.useState({
-    startDate: null,
-    endDate: null,
-  });
-  const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  console.log(loading);
+  const { onGetData, data, isLoading } = useHome();
+  const [startDate, setStartDate] = React.useState<Date | null>(null);
+
+  const [endDate, setEndDate] = React.useState<Date | null>(null);
 
   const style = createStyles();
 
   const columns: GridColDef[] = [
     {
-      field: "mst",
-      flex: 1,
-      headerName: "Mã số thuế",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "Ma_loai_GD",
-      flex: 1,
-      headerName: "Mã loại giấy tờ",
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params: GridRenderCellParams) => {
-        return <>{EnumMaKH[params.row.Ma_loai_GD]}</>;
-      },
-    },
-    // {
-    //   field: "",
-    //   // flex: 1,
-    //   headerName: "Số giấy tờ",
-    //   sortable: false,
-    //   disableColumnMenu: true,
-    // },
-    {
-      field: "Ten_KH",
-      flex: 1,
-      headerName: "Tên khách hàng",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "So_TK",
-      flex: 1,
-      headerName: "Số tài khoản",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "Ngay_Mo",
-      flex: 1,
-      headerName: "Ngày mở",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "Ngay_Dong",
-      flex: 1,
-      headerName: "Ngày đóng",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "Ma_Loai_KH",
-      flex: 1,
-      headerName: "Loại tài khoản",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
       field: "id",
       flex: 1,
+      headerName: "Tên File",
+      sortable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: "LLL",
+      flex: 1,
+      headerName: "Ngày Upload",
+      sortable: false,
+      disableColumnMenu: true,
+    },
+    // {
+    //   field: "userId",
+    //   flex: 1,
+    //   headerName: "Mã loại giấy tờ",
+    //   sortable: false,
+    //   disableColumnMenu: true,
+    //   renderCell: (params: GridRenderCellParams) => {
+    //     return <>{EnumMaKH[params.row.userId]}</>;
+    //   },
+    // },
+    {
+      field: "action",
+      flex: 0.2,
       headerName: "Action",
-      align: "right",
+      align: "center",
       headerAlign: "center",
       disableColumnMenu: true,
       sortable: false,
@@ -111,23 +74,22 @@ const DataFirst = () => {
   ];
 
   const handleChange = (name: string) => (newValue: any) => {
-    setState((s) => ({ ...s, [name]: newValue?.$d }));
+    if (name === "startDate") {
+      setStartDate(newValue?.$d);
+    } else {
+      setEndDate(newValue?.$d);
+    }
   };
 
   React.useEffect(() => {
-    setLoading(true);
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
+    onGetData({ startDate, endDate });
   }, []);
 
-  // React.useEffect(() => {
-  //   if (ValidateDate(state.startDate) && ValidateDate(state.endDate)) console.log("222");
-  // }, [state.startDate, state.endDate]);
+  React.useEffect(() => {
+    if (startDate && endDate && moment(moment(startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(endDate).format("YYYY-MM-DD"))) {
+      onGetData({ startDate, endDate });
+    }
+  }, [startDate, endDate]);
 
   return (
     <MainLayout
@@ -136,34 +98,29 @@ const DataFirst = () => {
           <Grid sx={style.container}>
             <Grid sx={style.container.item}>
               <Box sx={{ marginRight: "16px", flex: 0.2, position: "relative" }}>
-                <DatePicker value={state.startDate} onChange={handleChange("startDate")} />
-                {state.startDate && state.endDate && !moment(moment(state.startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(state.endDate).format("YYYY-MM-DD")) && (
-                  <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
-                    Ngày bắt đầu phải nhỏ hơn ngày kết thúc
-                  </Text>
-                )}
-                {(!state.startDate && state.endDate) ||
-                  (state.startDate && !state.endDate && (
+                <DatePicker value={startDate} onChange={handleChange("startDate")}>
+                  {!!startDate && !!endDate && !moment(moment(startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(endDate).format("YYYY-MM-DD")) && (
                     <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
-                      Bạn phải chọn ngày bắt đầu và ngày kết thúc
+                      Ngày bắt đầu phải nhỏ hơn ngày kết thúc
                     </Text>
-                  ))}
+                  )}
+                  {(!!!startDate && !!endDate) ||
+                    (!!startDate && !!!endDate && (
+                      <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
+                        Bạn phải chọn ngày bắt đầu và ngày kết thúc
+                      </Text>
+                    ))}
+                </DatePicker>
               </Box>
               <Box sx={{ flex: 0.2 }}>
-                <DatePicker value={state.endDate} onChange={handleChange("endDate")} />
+                <DatePicker value={endDate} onChange={handleChange("endDate")} />
               </Box>
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <DataTable
-              rows={data}
-              columns={columns}
-              sx={style.wTable}
-              components={{
-                LoadingOverlay: LoadingSkeleton,
-              }}
-              loading={true}
-            />
+            {isLoading && !data?.length && <LoadingSkeleton />}
+            {!isLoading && !data?.length && <Text>Data Empty</Text>}
+            {data?.length > 0 && <DataTable rows={data} columns={columns} sx={style.wTable} />}
           </Grid>
           {isOpen && <DetailXML open={isOpen} onClose={() => hideModal()} />}
         </>

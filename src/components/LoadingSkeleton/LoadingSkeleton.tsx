@@ -7,8 +7,8 @@ const LoadingSkeleton = () => (
       height: "max-content",
     }}
   >
-    {[...Array(10)].map((_) => (
-      <Skeleton variant="rectangular" sx={{ my: 4, mx: 1 }} />
+    {[...Array(10)].map((_, index) => (
+      <Skeleton key={index} variant="rectangular" sx={{ my: 4, mx: 1, height:'20px' }} />
     ))}
   </Box>
 );

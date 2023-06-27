@@ -10,7 +10,6 @@ import { TabContext, TabPanel } from "@mui/lab";
 import DataSheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
 import createStyles from "./styles";
-import { colName } from "utils";
 
 const Excel = () => {
   const [data, setData] = React.useState([]);
@@ -70,8 +69,6 @@ const Excel = () => {
 
   const SheetRenderer = ({ columns, ...props }: any) => {
     const { children, className } = props;
-    console.log(props);
-
     return (
       <table style={styles.defaultStyles as any}>
         <thead>
@@ -126,8 +123,14 @@ const Excel = () => {
               if (activeSheet === index.toString()) {
                 return (
                   <TabPanel key={index} value={activeSheet}>
-                    {/* <Spreadsheet data={sheetData.data} DataViewer={(props: any) => <div>{props.cell}</div>} /> */}
-                    <DataSheet data={sheetData.data} sheetRenderer={(props: any) => <SheetRenderer {...props} columns={sheetData.columns} />} valueRenderer={(cell: any) => cell} />
+                    <Spreadsheet
+                      data={sheetData.data}
+                      DataViewer={(props: any) => {
+                        return <div>{props.cell?.value ? props.cell?.value : props.cell}</div>;
+                      }}
+
+                    />
+                    {/* <DataSheet data={sheetData.data} sheetRenderer={(props: any) => <SheetRenderer {...props} columns={sheetData.columns} />} valueRenderer={(cell: any) => cell} /> */}
                   </TabPanel>
                 );
               }
