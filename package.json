@@ -31,6 +31,7 @@
     "moment": "^2.29.4",
     "npm": "^9.7.1",
     "react": "^18.2.0",
+    "react-datasheet": "^1.4.12",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-redux": "^8.0.7",
