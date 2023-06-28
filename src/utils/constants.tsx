@@ -2,7 +2,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PestControlIcon from "@mui/icons-material/PestControl";
 import PieChartIcon from "@mui/icons-material/PieChart";
 import LineAxisIcon from "@mui/icons-material/LineAxis";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 
 export enum EnumNotificationType {
   success = "success",
@@ -28,14 +28,9 @@ export enum EnumValueType {
   "Function" = "Function",
 }
 
-export enum EnumMaKH {
-  "Khách vip" = 1,
-  "Khách cùi",
-  "Khách rách",
-}
 
 export const Menu = [
-  { icon: <UploadFileIcon />, label: "Dashboard", href: "/" },
+  { icon: <ImportExportIcon />, label: "Imports", href: "/" },
   { icon: <DashboardIcon />, label: "Dữ liệu lần đấu", href: "/datafirst" },
   { icon: <PieChartIcon />, label: "Dữ liệu định kỳ", href: "/datacurrent" },
   { icon: <LineAxisIcon />, label: "Excel", href: "/excel" },

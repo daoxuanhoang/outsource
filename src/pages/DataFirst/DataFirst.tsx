@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Box, Skeleton } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 
 import { MainLayout } from "../../layouts/MainLayout";
 import createStyles from "./styles";
@@ -10,7 +10,6 @@ import { DetailXML } from "../../components/DetailXML";
 import { ButtonCus } from "components/Button";
 import { Text } from "components/Text";
 import moment from "moment";
-import { EnumMaKH, ValidateDate } from "utils";
 import { DatePicker } from "components/DatePicker";
 import { LoadingSkeleton } from "components/LoadingSkeleton";
 import { useHome } from "hooks";
@@ -39,16 +38,6 @@ const DataFirst = () => {
       sortable: false,
       disableColumnMenu: true,
     },
-    // {
-    //   field: "userId",
-    //   flex: 1,
-    //   headerName: "Mã loại giấy tờ",
-    //   sortable: false,
-    //   disableColumnMenu: true,
-    //   renderCell: (params: GridRenderCellParams) => {
-    //     return <>{EnumMaKH[params.row.userId]}</>;
-    //   },
-    // },
     {
       field: "action",
       flex: 0.2,
@@ -58,13 +47,12 @@ const DataFirst = () => {
       disableColumnMenu: true,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => {
-        const handleClick = (e: any, row: any) => {
-          e.stopPropagation();
+        const handleClick = (row: any) => {
           showModal(row);
         };
         return (
           <Box>
-            <ButtonCus variant="contained" onClick={(e: any) => handleClick(e, params.row)}>
+            <ButtonCus variant="contained" onClick={() => handleClick(params.row)}>
               Chi tiết
             </ButtonCus>
           </Box>
@@ -89,7 +77,7 @@ const DataFirst = () => {
     if (startDate && endDate && moment(moment(startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(endDate).format("YYYY-MM-DD"))) {
       onGetData({ startDate, endDate });
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, onGetData]);
 
   return (
     <MainLayout
@@ -118,11 +106,11 @@ const DataFirst = () => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            {isLoading && !data?.length && <LoadingSkeleton />}
+            {isLoading && <LoadingSkeleton />}
             {!isLoading && !data?.length && <Text>Data Empty</Text>}
-            {data?.length > 0 && <DataTable rows={data} columns={columns} sx={style.wTable} />}
+            {!isLoading && data?.length > 0 && <DataTable rows={data} columns={columns} page={0} perPage={10} sx={style.wTable} />}
           </Grid>
-          {isOpen && <DetailXML open={isOpen} onClose={() => hideModal()} />}
+          {isOpen && <DetailXML type={"dataFirst"} open={isOpen} onClose={() => hideModal()} />}
         </>
       }
     />

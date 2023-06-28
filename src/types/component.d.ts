@@ -1,5 +1,5 @@
 import { Theme, SxProps, } from "@mui/system";
-import { ButtonProps, ModalTypeMap, TypographyProps } from '@mui/material';
+import { ButtonProps, ModalTypeMap, TextFieldProps, TypographyProps } from '@mui/material';
 import { SVGProps } from "react";
 import { DataGridProps } from "@mui/x-data-grid";
 import { DatePickerProps } from "@mui/lab";
@@ -9,7 +9,25 @@ export type ISXTheme = SxProps<Theme>;
 export type IModalInit = ModalTypeMap['props'];
 export type IDatePickerInit = DatePickerProps<TDate>;
 export type ITextInit = TypographyProps;
+export type TPopupKey = 'email';
+export type IInputVariant = 'base' | 'lookup-field' | 'popup-textfield' | 'number';
 
+
+
+export type IInput = TextFieldProps & {
+  popupKey?: TPopupKey;
+  labelstyles?: SxProps;
+  useI18n?: boolean;
+  onChange?: (v: any) => void;
+  onSelected?: (v: any) => void;
+  onClick?: () => void;
+  type?: string;
+  icon?: { component: JSX.Element; position: 'start' | 'end' };
+  inputVariant?: IInputVariant;
+  LabelProps?: IText;
+  dataSelectType?: any;
+  inputLabel?: string | number | true | JSX.Element | React.ReactFragment;
+};
 
 export type IModal = IModalInit & {
   direction?: 'right' | 'left' | 'up' | 'down';
@@ -24,6 +42,12 @@ export type IDatePicker = IDatePickerInit & {
 export interface IText extends ITextInit {
   children?: string;
   color?: any;
+}
+
+export interface IDetailXML {
+  open: boolean,
+  onClose?: () => void,
+  type: string
 }
 
 export type IButtonVariantStyle =
@@ -73,4 +97,4 @@ export type IButton = ButtonProps & {
 
 // DataGrid
 export type IDataTable = DataGridProps<any> &
-  React.RefAttributes<HTMLDivElement> & { containerStyle?: ISXTheme };
+  React.RefAttributes<HTMLDivElement> & { containerStyle?: ISXTheme, page: number, perPage: number };

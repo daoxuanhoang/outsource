@@ -1,198 +1,51 @@
 import React from "react";
-import { Grid, Box, TextField } from "@mui/material";
+import { Grid, TextField, InputAdornment } from "@mui/material";
 
 import { MainLayout } from "../../layouts/MainLayout";
 import createStyles from "./styles";
 import { ImportData } from "../../components/ImportData";
 import DataTable from "../../components/Table/Table";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { useDispatch } from "react-redux";
-import { useModal } from "../../hooks/useModal";
-import { Modal } from "../../components/Modal";
-import { DetailXML } from "../../components/DetailXML";
+import { GridColDef } from "@mui/x-data-grid";
 import { ButtonCus } from "components/Button";
-import { Text } from "components/Text";
-import moment from "moment";
-import { EnumMaKH, ValidateDate } from "utils";
-import { DatePicker } from "components/DatePicker";
+import SearchIcon from "@mui/icons-material/Search";
+import { useHome, useModal } from "hooks";
+import { LoadingSkeleton } from "components/LoadingSkeleton";
+import { Input } from "components/Input";
 
 const Dashboard = () => {
-  const [open, setOpen] = React.useState(false);
-  const { showModal, hideModal, isOpen } = useModal();
-  const [state, setState] = React.useState({
-    startDate: null,
-    endDate: null,
-  });
+  const [search, setSearch] = React.useState<string>("");
+  const { onGetData, data, isLoading } = useHome();
+  const { isOpen, showModal, hideModal } = useModal();
 
   const style = createStyles();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const columns: GridColDef[] = [
     {
-      field: "mst",
-      flex: 1,
-      headerName: "Mã số thuế",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "Ma_loai_GD",
-      flex: 1,
-      headerName: "Mã loại giấy tờ",
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params: GridRenderCellParams) => {
-        return <>{EnumMaKH[params.row.Ma_loai_GD]}</>;
-      },
-    },
-    // {
-    //   field: "",
-    //   // flex: 1,
-    //   headerName: "Số giấy tờ",
-    //   sortable: false,
-    //   disableColumnMenu: true,
-    // },
-    {
-      field: "Ten_KH",
-      flex: 1,
-      headerName: "Tên khách hàng",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "So_TK",
-      flex: 1,
-      headerName: "Số tài khoản",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "Ngay_Mo",
-      flex: 1,
-      headerName: "Ngày mở",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "Ngay_Dong",
-      flex: 1,
-      headerName: "Ngày đóng",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
-      field: "Ma_Loai_KH",
-      flex: 1,
-      headerName: "Loại tài khoản",
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
       field: "id",
-      flex: 1,
-      headerName: "Action",
-      align: "right",
-      headerAlign: "center",
-      disableColumnMenu: true,
+      flex: 0.9,
+      headerName: "Tên File",
       sortable: false,
-      renderCell: (params: GridRenderCellParams) => {
-        const handleClick = (e: any, row: any) => {
-          e.stopPropagation();
-          showModal(row);
-        };
-        return (
-          <Box>
-            <ButtonCus variant="contained" onClick={(e: any) => handleClick(e, params.row)}>
-              Chi tiết
-            </ButtonCus>
-          </Box>
-        );
-      },
+      disableColumnMenu: true,
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      mst: "12222222",
-      Ma_loai_GD: "1",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 2,
-      mst: "12222222",
-      Ma_loai_GD: "2",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 3,
-      mst: "12222222",
-      Ma_loai_GD: "3",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 4,
-      mst: "12222222",
-      Ma_loai_GD: "2",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 5,
-      mst: "12222222",
-      Ma_loai_GD: "2",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-    {
-      id: 6,
-      mst: "12222222",
-      Ma_loai_GD: "2",
-      Ten_KH: "Đào Xuân Hoàng",
-      So_TK: "0349792407",
-      Ngay_Mo: Date(),
-      Ngay_Dong: Date(),
-      Ma_Loai_KH: "2222",
-    },
-  ];
+  React.useEffect(() => {
+    onGetData(search as any);
+  }, []);
 
-  const handleChange = (name: string) => (newValue: any) => {
-    setState((s) => ({ ...s, [name]: newValue?.$d }));
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
   };
 
-  // React.useEffect(() => {
-  //   if (ValidateDate(state.startDate)) console.log("222");
-  // }, [state.startDate]);
+  const onClickSearch = React.useCallback(() => {
+    onGetData(search as any);
+  }, [search]);
 
-  // console.log(state.startDate &&
-  //   state.endDate &&
-  //   moment(moment(state.startDate).format("YYYY-MM-DD")).isBefore(
-  //     moment(state.endDate).format("YYYY-MM-DD")
-  //   ) );
+    const handlePaginationModelChange = (newModel: any) => {
+    const { pageSize, page } = newModel;
+    console.log(pageSize, page);
+    
+  };
 
   return (
     <MainLayout
@@ -207,7 +60,7 @@ const Dashboard = () => {
               width: "100%",
             }}
           >
-            <ButtonCus variant="contained" onClick={handleClickOpen}>
+            <ButtonCus variant="contained" onClick={() => showModal(null)}>
               Import
             </ButtonCus>
             <Grid
@@ -218,30 +71,40 @@ const Dashboard = () => {
                 width: "100%",
               }}
             >
-              <Box sx={{ marginRight: "16px", flex: 0.2, position: "relative" }}>
-                <DatePicker value={state.startDate} onChange={handleChange("startDate")} />
-                {state.startDate && state.endDate && !moment(moment(state.startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(state.endDate).format("YYYY-MM-DD")) && (
-                  <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
-                    Ngày bắt đầu phải nhỏ hơn ngày kết thúc
-                  </Text>
-                )}
-                {(!state.startDate && state.endDate) ||
-                  (state.startDate && !state.endDate && (
-                    <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
-                      Bạn phải chọn ngày bắt đầu và ngày kết thúc
-                    </Text>
-                  ))}
-              </Box>
-              <Box sx={{ flex: 0.2 }}>
-                <DatePicker value={state.endDate} onChange={handleChange("endDate")} />
-              </Box>
+              <Input
+                type="search"
+                onChange={handleSearch}
+                value={search}
+                placeholder="Nhập thông tin..."
+                variant="outlined"
+                sx={{ minWidth: "300px", marginRight: "16px" }}
+                icon={{ component: <SearchIcon />, position: "end" }}
+              />
+              {/* <TextField
+                type="search"
+                placeholder="Nhập thông tin..."
+                size="small"
+                sx={{ minWidth: "300px", marginRight: "8px" }}
+                onChange={handleSearch}
+                value={search}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              /> */}
+              <ButtonCus variant="contained" size="small" onClick={onClickSearch}>
+                Search
+              </ButtonCus>
             </Grid>
           </Grid>
-          <ImportData open={open} onClose={() => handleClose()} />
+          <ImportData open={isOpen} onClose={() => hideModal()} />
           <Grid item xs={12}>
-            <DataTable rows={rows} columns={columns} sx={style.wTable} hideFooterPagination={false} hideFooter={false} />
+            {isLoading && <LoadingSkeleton />}
+            {!isLoading && data?.length > 0 && <DataTable rows={data} columns={columns} sx={style.wTable} page={0} perPage={10} onPaginationModelChange={handlePaginationModelChange} />}
           </Grid>
-          {isOpen && <DetailXML open={isOpen} onClose={() => hideModal()} />}
         </>
       }
     />

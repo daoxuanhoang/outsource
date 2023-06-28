@@ -1,14 +1,17 @@
 export default () => {
     return {
         container: {
-            position: "absolute" as "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: '100%',
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 2,
+            marginBottom: "16px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            item: {
+                display: "flex",
+                justifyContent: "end",
+                alignItems: "center",
+                width: "100%",
+            }
         },
         flexCenter: {
             display: 'flex',

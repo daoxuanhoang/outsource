@@ -9,6 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import createStyles from "./styles";
 import { useUser } from "../../hooks";
+import { Text } from "components/Text";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -28,14 +29,15 @@ export default function AccountMenu() {
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2 }}
+            sx={{ mr: 1 }}
             aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 40, height: 40 }}>M</Avatar>
+            <Avatar sx={{ width: 40, height: 40 }}></Avatar>
           </IconButton>
         </Tooltip>
+        <Text>Hoàng</Text>
       </Box>
       <Menu
         anchorEl={anchorEl}

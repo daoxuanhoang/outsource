@@ -9,10 +9,6 @@ export default () => {
                 borderTopLeftRadius: 8,
                 borderTopRightRadius: 8,
                 backgroundColor: '#E9E9E9',
-                // '& .MuiDataGrid-columnHeader:nth-of-type(1)': {
-                //     minWidth: '42px !important',
-                //     maxWidth: '42px !important',
-                // },
             },
         },
         defaultStyles: {
@@ -26,6 +22,12 @@ export default () => {
                 minWidth: '42px !important',
                 maxWidth: '42px !important',
             },
+            '& .MuiDataGrid-columnHeader:focus': {
+                outline: 'unset'
+            },
+            '& .MuiDataGrid-cell:focus': {
+                outline: 'unset'
+            }
         },
     }
 }

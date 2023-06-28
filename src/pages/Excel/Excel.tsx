@@ -10,6 +10,7 @@ import { TabContext, TabPanel } from "@mui/lab";
 import DataSheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
 import createStyles from "./styles";
+import { DataTable } from "components/Table";
 
 const Excel = () => {
   const [data, setData] = React.useState([]);
@@ -67,36 +68,36 @@ const Excel = () => {
   //   return { cell };
   // };
 
-  const SheetRenderer = ({ columns, ...props }: any) => {
-    const { children, className } = props;
-    return (
-      <table style={styles.defaultStyles as any}>
-        <thead>
-          <tr>
-            <th style={styles.Spreadsheet_header as any} />
-            {columns.map((col: any, colIndex: number) => (
-              <th style={styles.Spreadsheet_header as any} key={colIndex}>
-                {col.name}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {children?.map((row: any, rowIndex: number) => (
-            <tr key={rowIndex}>
-              <th style={styles.Spreadsheet_header as any}>{+row.key + 1}</th>
+  // const SheetRenderer = ({ columns, ...props }: any) => {
+  //   const { children, className } = props;
+  //   return (
+  //     <table style={styles.defaultStyles as any}>
+  //       <thead>
+  //         <tr>
+  //           <th style={styles.Spreadsheet_header as any} />
+  //           {columns.map((col: any, colIndex: number) => (
+  //             <th style={styles.Spreadsheet_header as any} key={colIndex}>
+  //               {col.name}
+  //             </th>
+  //           ))}
+  //         </tr>
+  //       </thead>
+  //       <tbody>
+  //         {children?.map((row: any, rowIndex: number) => (
+  //           <tr key={rowIndex}>
+  //             <th style={styles.Spreadsheet_header as any}>{+row.key + 1}</th>
 
-              {row.props.cells?.map((cell: any, cellIndex: number) => (
-                <td style={styles.Spreadsheet_cell as any} key={cellIndex}>
-                  <div> {cell}</div>
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
+  //             {row.props.cells?.map((cell: any, cellIndex: number) => (
+  //               <td style={styles.Spreadsheet_cell as any} key={cellIndex}>
+  //                 <div> {cell}</div>
+  //               </td>
+  //             ))}
+  //           </tr>
+  //         ))}
+  //       </tbody>
+  //     </table>
+  //   );
+  // };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setActiveSheet(newValue);
@@ -122,13 +123,12 @@ const Excel = () => {
             {data.map((sheetData: any, index: number) => {
               if (activeSheet === index.toString()) {
                 return (
-                  <TabPanel key={index} value={activeSheet}>
+                  <TabPanel key={index} value={activeSheet} sx={styles.defaultStyles}>
                     <Spreadsheet
                       data={sheetData.data}
                       DataViewer={(props: any) => {
-                        return <div>{props.cell?.value ? props.cell?.value : props.cell}</div>;
+                        return <div style={{ padding: "4px" }}>{props.cell?.value ? props.cell?.value : props.cell}</div>;
                       }}
-
                     />
                     {/* <DataSheet data={sheetData.data} sheetRenderer={(props: any) => <SheetRenderer {...props} columns={sheetData.columns} />} valueRenderer={(cell: any) => cell} /> */}
                   </TabPanel>
