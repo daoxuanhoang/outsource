@@ -13,11 +13,6 @@ const DatePicker = React.forwardRef<HTMLInputElement, IDatePicker>(function Date
       <DatePickerMui
         ref={ref}
         sx={{ ...styles.defaultStyles, ...styleOverrides }}
-        // slotProps={{
-        //   textField: {
-        //     disabled: true,
-        //   },
-        // }}
         value={value}
         format={format}
         {...props}

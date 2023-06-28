@@ -52,10 +52,7 @@ const Control = () => {
         };
         return (
           <Box>
-            <ButtonCus
-              variant="contained"
-              onClick={(e: any) => handleClick(e, params.row)}
-            >
+            <ButtonCus variant="contained" onClick={(e: any) => handleClick(e, params.row)}>
               Chi tiết
             </ButtonCus>
           </Box>
@@ -84,15 +81,8 @@ const Control = () => {
   };
 
   React.useEffect(() => {
-    if (
-      ValidateDate(state.startDate) &&
-      ValidateDate(state.endDate) &&
-      moment(state.startDate).isBefore(state.endDate)
-    )
-      console.log("222");
+    if (ValidateDate(state.startDate) && ValidateDate(state.endDate) && moment(state.startDate).isBefore(state.endDate)) console.log("222");
   }, [state.startDate, state.endDate]);
-
-  
 
   return (
     <MainLayout
@@ -115,53 +105,29 @@ const Control = () => {
                 width: "100%",
               }}
             >
-              <Box
-                sx={{ marginRight: "16px", flex: 0.2, position: "relative" }}
-              >
-                <DatePicker
-                  value={state.startDate}
-                  onChange={handleChange("startDate")}
-                />
-                {state.startDate &&
-                  state.endDate &&
-                  !moment(
-                    moment(state.startDate).format("YYYY-MM-DD")
-                  ).isSameOrBefore(moment(state.endDate).format("YYYY-MM-DD")) && (
-                    <Text
-                      color="red"
-                      sx={{ position: "absolute", zIndex: 999 }}
-                    >
-                      Ngày bắt đầu phải nhỏ hơn ngày kết thúc
-                    </Text>
-                  )}
+              <Box sx={{ marginRight: "16px", flex: 0.2, position: "relative" }}>
+                <DatePicker value={state.startDate} onChange={handleChange("startDate")} />
+                {state.startDate && state.endDate && !moment(moment(state.startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(state.endDate).format("YYYY-MM-DD")) && (
+                  <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
+                    Ngày bắt đầu phải nhỏ hơn ngày kết thúc
+                  </Text>
+                )}
                 {(!state.startDate && state.endDate) ||
                   (state.startDate && !state.endDate && (
-                    <Text
-                      color="red"
-                      sx={{ position: "absolute", zIndex: 999 }}
-                    >
+                    <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
                       Bạn phải chọn ngày bắt đầu và ngày kết thúc
                     </Text>
                   ))}
               </Box>
               <Box sx={{ flex: 0.2 }}>
-                <DatePicker
-                  value={state.endDate}
-                  onChange={handleChange("endDate")}
-                />
+                <DatePicker value={state.endDate} onChange={handleChange("endDate")} />
               </Box>
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <DataTable
-              rows={rows}
-              columns={columns}
-              sx={style.wTable}
-              hideFooterPagination={false}
-              hideFooter={false}
-            />
+            <DataTable page={0} perPage={10} rows={rows} columns={columns} sx={style.wTable} hideFooterPagination={false} hideFooter={false} />
           </Grid>
-          {isOpen && <DetailXML open={isOpen} onClose={() => hideModal()} />}
+          {isOpen && <DetailXML type={"control"} open={isOpen} onClose={() => hideModal()} />}
         </>
       }
     />

@@ -1,6 +1,6 @@
 import React from "react";
 import { DataTable } from "components/Table";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [
   {
@@ -76,7 +76,7 @@ const columns: GridColDef[] = [
 ];
 
 const DetailXMLDataFirst = (content: any) => {  
-  return <DataTable rows={[]} columns={columns} />;
+  return <DataTable rows={[]} columns={columns} page={0} perPage={10} />;
 };
 
 export default React.memo(DetailXMLDataFirst);

@@ -1,37 +1,60 @@
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { Grid } from "@mui/material";
+import { DataGrid, GridPagination, gridPageCountSelector, useGridApiContext, useGridSelector } from "@mui/x-data-grid";
+import { Grid, TablePaginationProps } from "@mui/material";
+import MuiPagination from "@mui/material/Pagination";
 import createStyles from "./styles";
+import { IDataTable, ISXTheme } from "types/component";
 
-const DataTable = React.forwardRef<any, any>(function Table(
+function Pagination({ page, onPageChange, className }: Pick<TablePaginationProps, "page" | "onPageChange" | "className">) {
+  const apiRef = useGridApiContext();
+  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
+  return (
+    <MuiPagination
+      color="primary"
+      className={className}
+      count={pageCount}
+      page={page + 1}
+      onChange={(event, newPage) => {
+        onPageChange(event as any, newPage - 1);
+      }}
+    />
+  );
+}
+
+function CustomPagination(props: any) {
+  return <GridPagination ActionsComponent={Pagination} {...props} />;
+}
+
+const DataTable = React.forwardRef<any, IDataTable>(function Table(
   {
     containerStyle,
     sx,
     columns,
-    rows,
+    rows = [],
     page = 0,
     perPage = 10,
-    loading = false,
     hideFooterPagination = false,
     checkboxSelection = false,
     hideFooter = false,
     hideFooterSelectedRowCount = true,
+    onPaginationModelChange,
     ...props
   },
   ref
 ) {
   const styles = createStyles();
   const styleOverrides = sx || {};
-  const handlePaginationModelChange = (newModel: any) => {
-    const { pageSize, page } = newModel;
-  };
 
   return (
-    <Grid sx={[styles.wrapTableContent, containerStyle || {}]}>
+    <Grid sx={[styles.wrapTableContent, containerStyle || {}] as ISXTheme}>
       <DataGrid
         ref={ref}
         sx={{ ...styles.defaultStyles, ...styleOverrides }}
-        rows={rows?.map((item: any, idx: string) => ({ ...item, id: idx + 1 }))}
+        rows={rows?.map((item: any, idx: number) => ({ ...item, id: idx + 1 }))}
+        slots={{
+          pagination: CustomPagination,
+        }}
         columns={columns}
         initialState={{
           pagination: {
@@ -43,8 +66,7 @@ const DataTable = React.forwardRef<any, any>(function Table(
         hideFooterPagination={hideFooterPagination}
         hideFooterSelectedRowCount={hideFooterSelectedRowCount}
         hideFooter={hideFooter}
-        loading={loading}
-        onPaginationModelChange={handlePaginationModelChange}
+        onPaginationModelChange={onPaginationModelChange}
         {...props}
       />
     </Grid>

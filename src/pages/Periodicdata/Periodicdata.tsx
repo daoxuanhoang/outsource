@@ -8,40 +8,51 @@ import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useModal } from "../../hooks/useModal";
 import { DetailXML } from "../../components/DetailXML";
 import { ButtonCus } from "components/Button";
-import moment from "moment";
-import { ValidateDate } from "utils";
 import { Text } from "components/Text";
+import moment from "moment";
 import { DatePicker } from "components/DatePicker";
+import { LoadingSkeleton } from "components/LoadingSkeleton";
+import { useHome } from "hooks";
 
 const Periodicdata = () => {
   const { showModal, hideModal, isOpen } = useModal();
-  const [state, setState] = React.useState({
-    startDate: null,
-    endDate: null,
-  });
+  const { onGetData, data, isLoading } = useHome();
+  const [startDate, setStartDate] = React.useState<Date | null>(null);
+
+  const [endDate, setEndDate] = React.useState<Date | null>(null);
 
   const style = createStyles();
 
   const columns: GridColDef[] = [
     {
-      field: "firstName",
+      field: "id",
       flex: 1,
       headerName: "Tên File",
       sortable: false,
       disableColumnMenu: true,
     },
     {
-      field: "age",
+      field: "LLL",
       flex: 1,
-      headerName: "Ngày tạo",
+      headerName: "Ngày Upload",
       sortable: false,
       disableColumnMenu: true,
     },
+    // {
+    //   field: "userId",
+    //   flex: 1,
+    //   headerName: "Mã loại giấy tờ",
+    //   sortable: false,
+    //   disableColumnMenu: true,
+    //   renderCell: (params: GridRenderCellParams) => {
+    //     return <>{EnumMaKH[params.row.userId]}</>;
+    //   },
+    // },
     {
       field: "action",
-      flex: 0.5,
+      flex: 0.2,
       headerName: "Action",
-      align: "right",
+      align: "center",
       headerAlign: "center",
       disableColumnMenu: true,
       sortable: false,
@@ -52,10 +63,7 @@ const Periodicdata = () => {
         };
         return (
           <Box>
-            <ButtonCus
-              variant="contained"
-              onClick={(e: any) => handleClick(e, params.row)}
-            >
+            <ButtonCus variant="contained" onClick={(e: any) => handleClick(e, params.row)}>
               Chi tiết
             </ButtonCus>
           </Box>
@@ -64,104 +72,57 @@ const Periodicdata = () => {
     },
   ];
 
-  const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-    { id: 10, lastName: "Roxie", firstName: "Harvey", age: 65 },
-    { id: 11, lastName: "Roxie", firstName: "Harvey", age: 65 },
-    { id: 12, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  ];
-
   const handleChange = (name: string) => (newValue: any) => {
-    setState((s) => ({ ...s, [name]: newValue?.$d }));
+    if (name === "startDate") {
+      setStartDate(newValue?.$d);
+    } else {
+      setEndDate(newValue?.$d);
+    }
   };
 
   React.useEffect(() => {
-    if (
-      ValidateDate(state.startDate) &&
-      ValidateDate(state.endDate) &&
-      moment(state.startDate).isBefore(state.endDate)
-    )
-      console.log("222");
-  }, [state.startDate, state.endDate]);
+    onGetData({ startDate, endDate });
+  }, []);
 
-  
+  React.useEffect(() => {
+    if (startDate && endDate && moment(moment(startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(endDate).format("YYYY-MM-DD"))) {
+      onGetData({ startDate, endDate });
+    }
+  }, [startDate, endDate]);
 
   return (
     <MainLayout
       children={
         <>
-          <Grid
-            sx={{
-              marginBottom: "16px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Grid
-              sx={{
-                display: "flex",
-                justifyContent: "end",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <Box
-                sx={{ marginRight: "16px", flex: 0.2, position: "relative" }}
-              >
-                <DatePicker
-                  value={state.startDate}
-                  onChange={handleChange("startDate")}
-                />
-                {state.startDate &&
-                  state.endDate &&
-                  !moment(
-                    moment(state.startDate).format("YYYY-MM-DD")
-                  ).isSameOrBefore(moment(state.endDate).format("YYYY-MM-DD")) && (
-                    <Text
-                      color="red"
-                      sx={{ position: "absolute", zIndex: 999 }}
-                    >
+          <Grid sx={style.container}>
+            <ButtonCus variant="contained">Đối soát</ButtonCus>
+            <Grid sx={style.container.item}>
+              <Box sx={{ marginRight: "16px", flex: 0.2, position: "relative" }}>
+                <DatePicker value={startDate} onChange={handleChange("startDate")}>
+                  {!!startDate && !!endDate && !moment(moment(startDate).format("YYYY-MM-DD")).isSameOrBefore(moment(endDate).format("YYYY-MM-DD")) && (
+                    <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
                       Ngày bắt đầu phải nhỏ hơn ngày kết thúc
                     </Text>
                   )}
-                {(!state.startDate && state.endDate) ||
-                  (state.startDate && !state.endDate && (
-                    <Text
-                      color="red"
-                      sx={{ position: "absolute", zIndex: 999 }}
-                    >
-                      Bạn phải chọn ngày bắt đầu và ngày kết thúc
-                    </Text>
-                  ))}
+                  {(!!!startDate && !!endDate) ||
+                    (!!startDate && !!!endDate && (
+                      <Text color="red" sx={{ position: "absolute", zIndex: 999 }}>
+                        Bạn phải chọn ngày bắt đầu và ngày kết thúc
+                      </Text>
+                    ))}
+                </DatePicker>
               </Box>
               <Box sx={{ flex: 0.2 }}>
-                <DatePicker
-                  value={state.endDate}
-                  onChange={handleChange("endDate")}
-                />
+                <DatePicker value={endDate} onChange={handleChange("endDate")} />
               </Box>
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <DataTable
-              rows={rows}
-              columns={columns}
-              sx={style.wTable}
-              hideFooterPagination={false}
-              hideFooter={false}
-            />
+            {isLoading && <LoadingSkeleton />}
+            {!isLoading && !data?.length && <Text>Data Empty</Text>}
+            {!isLoading && data?.length > 0 && <DataTable rows={data} columns={columns} page={0} perPage={10} sx={style.wTable} />}
           </Grid>
-          {isOpen && <DetailXML open={isOpen} onClose={() => hideModal()} />}
+          {isOpen && <DetailXML type={"dataCurrent"} open={isOpen} onClose={() => hideModal()} />}
         </>
       }
     />
