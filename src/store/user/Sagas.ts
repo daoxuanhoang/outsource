@@ -8,27 +8,27 @@ import { error } from "../notify";
 
 
 function* loginRequest(action: any) {
-    console.log(action);
-
     try {
         const res: IResponse = yield axiosClient.post(
-            `http://`,
+            `${process.env.REACT_APP_URL}/api/v1/login`,
             JSON.stringify(action.formData)
         )
-
         if (res?.success) {
             const user = res.data;
             yield put(loginSuccess(user as any));
             return action.callback?.(res);
-
         }
-
         yield put(loginFailure(res?.message as any));
-        yield put(error({ message: 'lỗi' } as INofifyState));
-    } catch (err: any) {
-        yield put(loginFailure(err));
-        yield put(error({ message: 'lỗi' } as INofifyState));
+        yield put(error({ message: res?.message } as INofifyState));
+    } catch (e: any) {
+        console.log(e);
+        yield put(loginFailure(e));
+        yield put(error({ message: e } as INofifyState));
     }
+}
+
+function* logoutRequest() {
+    yield window.location.replace('/login');
 }
 
 
@@ -36,9 +36,15 @@ function* watchLogin() {
     yield takeEvery(UserActions.LOGIN_REQUEST, loginRequest);
 }
 
+function* watchLogout() {
+    yield takeEvery(UserActions.LOGOUT, logoutRequest);
+}
+
+
 
 export default function* userSagas() {
     yield all([
         watchLogin(),
+        watchLogout()
     ]);
 }

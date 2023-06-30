@@ -14,7 +14,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import createStyles from "./styles";
 import { ItemMenu } from "../../components/ItemMenu";
 import { Menu } from "../../utils";
-import { Avatar } from "@mui/material";
 import AccountMenu from "./Menu";
 
 const drawerWidth: number = 240;
@@ -76,7 +75,7 @@ export default function MainLayout({ children }: any) {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       <AppBar position="absolute" open={open}>
         <Toolbar
           sx={{

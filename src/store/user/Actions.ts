@@ -11,6 +11,7 @@ export const loginActionRequest = (formData: any, callback?: (t: any) => void) =
 });
 
 
-export const logoutRequest = () => {
-    window.location.replace('/login');
-};
+export const logoutRequest = (callback?: (t: any) => void) => ({
+    type: UserActions.LOGOUT,
+    callback
+})

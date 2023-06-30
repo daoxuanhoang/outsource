@@ -11,9 +11,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/login" index={true} element={<Login />} />
-          <Route path={"/"} element={<PrivateRoute />}>
-            {showContentMenu(routers)}
-          </Route>
+          <Route path="/" element={<PrivateRoute />}>{showContentMenu(routers)}</Route>
         </Routes>
       </div>
     </Router>
@@ -24,8 +22,8 @@ const showContentMenu = (routers: any) => {
   var result = null;
 
   if (routers) {
-    result = routers.map((route: IRoute, index: number) => {
-      return <Route key={index} path={route.path} index={route.exact} element={<route.main />} />;
+    result = routers?.map((route: IRoute, index: number) => {
+      return <Route key={`${index} - ${route.path}`} path={route.path} index={route.exact} element={<route.main />} />;
     });
   }
   return result;

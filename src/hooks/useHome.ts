@@ -12,7 +12,7 @@ export function useHome() {
         dispatch(importXMLActionsRequest({ formData: payload, dataKey: 'importXML' }));
     }, [dispatch]);
 
-    const onGetData = useCallback((payload: IDateRang) => {
+    const onGetData = useCallback((payload: any) => {
         dispatch(getData({ formData: payload, dataKey: 'getData' }, (result) => {
             dispatch(onGetDataSuccess(result))
         }))

@@ -14,7 +14,10 @@ import { Input } from "components/Input";
 
 const Dashboard = () => {
   const [search, setSearch] = React.useState<string>("");
+  const [page, setPage] = React.useState(1);
+  const [perPage, setPerPage] = React.useState(10);
   const { onGetData, data, isLoading } = useHome();
+
   const { isOpen, showModal, hideModal } = useModal();
 
   const style = createStyles();
@@ -30,7 +33,7 @@ const Dashboard = () => {
   ];
 
   React.useEffect(() => {
-    onGetData(search as any);
+    onGetData({page, perPage, search});
   }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,10 +44,10 @@ const Dashboard = () => {
     onGetData(search as any);
   }, [search]);
 
-    const handlePaginationModelChange = (newModel: any) => {
+  const handlePaginationModelChange = (newModel: any) => {
     const { pageSize, page } = newModel;
-    console.log(pageSize, page);
-    
+    setPerPage(pageSize);
+    setPage(page);
   };
 
   return (
@@ -103,7 +106,7 @@ const Dashboard = () => {
           <ImportData open={isOpen} onClose={() => hideModal()} />
           <Grid item xs={12}>
             {isLoading && <LoadingSkeleton />}
-            {!isLoading && data?.length > 0 && <DataTable rows={data} columns={columns} sx={style.wTable} page={0} perPage={10} onPaginationModelChange={handlePaginationModelChange} />}
+            {!isLoading && data?.length > 0 && <DataTable rows={data} columns={columns} sx={style.wTable} page={page} perPage={perPage} onPaginationModelChange={handlePaginationModelChange} />}
           </Grid>
         </>
       }

@@ -14,6 +14,7 @@ export enum EnumNotificationType {
 export const KEY_CONTEXT = {
   AUTH_TOKEN: "authToken",
   LANGUAGE: "language",
+  ISACTIVE: 'isactive',
   USER: "user",
 };
 
