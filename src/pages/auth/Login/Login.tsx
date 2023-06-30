@@ -29,7 +29,8 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
-  const { onLogin } = useUser();
+  const { onLogin, checkAuth } = useUser();
+
   const handleSubmit = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -40,9 +41,9 @@ export default function LoginPage() {
     [onLogin]
   );
 
-  if (localStorage.getItem("user") === "true") {
-    return <Navigate to="/" />;
-  }
+    if (checkAuth()) {
+      return <Navigate to="/"/>;
+    }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -71,7 +72,7 @@ export default function LoginPage() {
               alignItems: "center",
             }}
           >
-            <img style={{marginBottom: '16px'}} src={LOGOCB} height={50} alt="cbbank" />
+            <img style={{ marginBottom: "16px" }} src={LOGOCB} height={50} alt="cbbank" />
             <Typography component="h2" variant="h6">
               Đăng nhập hệ thống
             </Typography>

@@ -14,7 +14,8 @@ import { Text } from "components/Text";
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { onLogout } = useUser();
+  const { onLogout, auth } = useUser();
+
   const style = createStyles();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -26,18 +27,11 @@ export default function AccountMenu() {
     <React.Fragment>
       <Box sx={style.MenuContainer}>
         <Tooltip title="Account settings">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            sx={{ mr: 1 }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-          >
-            <Avatar sx={{ width: 40, height: 40 }}></Avatar>
+          <IconButton onClick={handleClick} size="small" sx={{ mr: 1 }} aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined}>
+            <Avatar src={auth?.avatar} alt={auth?.name} sx={{ width: 40, height: 40 }}/>
           </IconButton>
         </Tooltip>
-        <Text>Hoàng</Text>
+        <Text>{auth?.name}</Text>
       </Box>
       <Menu
         anchorEl={anchorEl}

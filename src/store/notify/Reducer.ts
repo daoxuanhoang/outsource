@@ -51,6 +51,8 @@ const notifySlice = createSlice({
       };
     },
     error: (state, { payload }: { payload: INofifyState }) => {
+      console.log(payload.message);
+      
       return {
         ...state,
         message: payload.message,

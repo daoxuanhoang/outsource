@@ -19,19 +19,12 @@ const Alert = () => {
     hide();
   };
 
-  const AlertCus = React.forwardRef<HTMLDivElement, AlertProps>(
-    function AlertCus(props, ref) {
-      return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    }
-  );
+  const AlertCus = React.forwardRef<HTMLDivElement, AlertProps>(function AlertCus(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
   return (
-    <Snackbar
-      open={!!message}
-      autoHideDuration={duration}
-      anchorOrigin={position}
-      onClose={handleClose}
-    >
+    <Snackbar open={!!message} autoHideDuration={duration} anchorOrigin={position} onClose={handleClose}>
       <AlertCus onClose={handleClose} severity={type}>
         <Text>{message}</Text>
       </AlertCus>

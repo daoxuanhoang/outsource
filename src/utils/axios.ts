@@ -15,9 +15,9 @@ const axiosClient: AxiosInstance = axios.create({
 //Xác định một bộ chặn reuqest để thêm mã thông báo ủy quyền cho các request
 axiosClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('authToken')
         if (token) {
-            config.headers.Authorization = `Beare ${token}`
+            config.headers.Authorization = `Bearer ${token}`
         }
         return config
     },
@@ -30,7 +30,7 @@ axiosClient.interceptors.request.use(
 // xác định một bộ chặn phản hồi để xử lý lỗi
 axiosClient.interceptors.response.use(
     (response: AxiosResponse) => {
-        return response
+        return response.data
     },
     (error) => {
         if (error.response.status === 401) {

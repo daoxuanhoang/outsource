@@ -22,15 +22,16 @@ function* onImportXLMAction(action: IActionPayload) {
 function* onGetData(action: IActionPayload) {
     try {
         yield put(actionRequest())
+        const { page, perPage, search } = action.payload.formData
         const res: IResponse = yield axiosClient.get(
-            "https://jsonplaceholder.typicode.com/posts"
+            `${process.env.REACT_APP_URL}/api/v1/customers?page=${page}&perPage=${perPage}&search=${search}`
         )
-        if (res.data) {
-            const data = res.data;
+        if (res) {
+            const data = res;
             yield put((onGetDataSuccess(data)));
             return action.callback?.(data);
         }
-        yield put(error({ message: res.message } as INofifyState));
+        yield put(error({ message: 'Lỗi' } as INofifyState));
 
     } catch (e) {
         console.log(e);

@@ -31,7 +31,7 @@ const useSlice = createSlice({
                 error: payload,
                 loading: false
             }
-        }
+        },
     }
 })
 

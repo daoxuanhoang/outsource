@@ -17,6 +17,7 @@ export interface IRSResult {
 }
 
 export interface IResponse {
+    errors: any,
     success: boolean;
     message: string;
     data: IRSResult;
@@ -24,5 +25,10 @@ export interface IResponse {
 
 export interface IUser {
     name: string,
-    data: any
+    avatar: string,
+    id: string,
+    phone: string,
+    email: string,
+    gender: string,
+    status: string
 }
