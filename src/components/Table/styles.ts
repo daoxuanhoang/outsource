@@ -29,5 +29,10 @@ export default () => {
                 outline: 'unset'
             }
         },
+        overflow: {
+            "& .MuiDataGrid-virtualScroller": {
+                overflow: 'hidden'
+            },
+        }
     }
 }

@@ -125,7 +125,7 @@ const Control = () => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <DataTable page={0} perPage={10} rows={rows} columns={columns} sx={style.wTable} hideFooterPagination={false} hideFooter={false} />
+            <DataTable page={0} perPage={10} rows={rows} total={10} columns={columns} sx={style.wTable} loading={false} />
           </Grid>
           {isOpen && <DetailXML type={"control"} open={isOpen} onClose={() => hideModal()} />}
         </>

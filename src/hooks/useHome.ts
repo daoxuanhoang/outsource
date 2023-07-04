@@ -8,8 +8,11 @@ export function useHome() {
     const isLoading = useSelector(HomeSelectors.getLoading);
     const data = useSelector(HomeSelectors.getData)
 
-    const onImportXML = useCallback((payload: File[]) => {
-        dispatch(importXMLActionsRequest({ formData: payload, dataKey: 'importXML' }));
+    const onImportXML = useCallback((payload: FormData) => {
+        dispatch(importXMLActionsRequest({ formData: payload, dataKey: 'importXML' }, (result) => {
+            dispatch(importXMLSuccess(result))
+            onGetData({ page: 0, perPage: 10, search: "" });
+        }));
     }, [dispatch]);
 
     const onGetData = useCallback((payload: any) => {

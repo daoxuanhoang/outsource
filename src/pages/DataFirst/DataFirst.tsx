@@ -108,7 +108,7 @@ const DataFirst = () => {
           <Grid item xs={12}>
             {isLoading && <LoadingSkeleton />}
             {!isLoading && !data?.length && <Text>Data Empty</Text>}
-            {!isLoading && data?.length > 0 && <DataTable rows={data} columns={columns} page={0} perPage={10} sx={style.wTable} />}
+            {!isLoading && data?.length > 0 && <DataTable rows={data} total={10} columns={columns} page={0} perPage={10} loading={false} sx={style.wTable} />}
           </Grid>
           {isOpen && <DetailXML type={"dataFirst"} open={isOpen} onClose={() => hideModal()} />}
         </>

@@ -11,10 +11,23 @@ import { IActionPayload } from "types/apis/api";
 function* onImportXLMAction(action: IActionPayload) {
     try {
         yield put(actionRequest())
-        yield put(importXMLSuccess(action))
-        yield put(success({ message: 'success' } as INofifyState))
-    } catch (error) {
-
+        const res: IResponse = yield axiosClient({
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            method: 'POST',
+            url: `${process.env.REACT_APP_URL}/api/v1/uploadFiles`,
+            data: action.payload.formData
+        })
+        if (res) {
+            yield put(importXMLSuccess(res))
+            yield put(success({ message: res.message } as INofifyState))
+            return action.callback?.(res)
+        }
+        yield put(error({ message: 'lỗi' } as INofifyState))
+    } catch (e) {
+        console.log(`test`, e);
+        yield put(error({ message: e } as INofifyState))
     }
 
 }
@@ -24,14 +37,15 @@ function* onGetData(action: IActionPayload) {
         yield put(actionRequest())
         const { page, perPage, search } = action.payload.formData
         const res: IResponse = yield axiosClient.get(
-            `${process.env.REACT_APP_URL}/api/v1/customers?page=${page}&perPage=${perPage}&search=${search}`
+            `${process.env.REACT_APP_URL}/api/v1/files?page=${page + 1}&perPage=${perPage}&search=${search}`
         )
         if (res) {
             const data = res;
             yield put((onGetDataSuccess(data)));
             return action.callback?.(data);
         }
-        yield put(error({ message: 'Lỗi' } as INofifyState));
+
+        yield put(error({ message: 'Lỗi quá lỗi!' } as INofifyState));
 
     } catch (e) {
         console.log(e);

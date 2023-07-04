@@ -12,6 +12,7 @@ import { Text } from "components/Text";
 import { error } from "store/notify";
 import { useDispatch } from "react-redux";
 import { UploadDropzone } from "components/UploadDropzone";
+import axios from "axios";
 
 const ImportData = ({ open, onClose }: IModal) => {
   const [myFiles, setMyFiles] = React.useState([]);
@@ -37,20 +38,26 @@ const ImportData = ({ open, onClose }: IModal) => {
     setMyFiles([]);
   };
 
-  const submitHandler = (e: any) => {
+  const submitHandler = async (e: any) => {
     e.preventDefault();
+    const formData = new FormData();
     if (!myFiles.length) {
       dispatch(error({ message: "Chưa chọn file" } as INofifyState));
       return;
     } else {
-      // reader.readAsText(myFiles[0] as any);
-      // reader.onloadend = (evt: any) => {
-      //   const readerData = evt.target.result;
-      //   parser(readerData, (err: any, result: any) => {
-      //     setContent(result);
-      //   });
-      // };
-      onImportXML(myFiles);
+      for (let i = 0; i < myFiles.length; i++) {
+        // reader.readAsText(myFiles[i] as any);
+        // reader.onload = (evt: any) => {
+        //   const readerData = evt.target.result;
+        //   parser(readerData, (err: any, result: any) => {
+        //     setContent(result);
+        //   });
+        // };
+        // reader.readAsDataURL(myFiles[i]);
+        const file = myFiles[i];
+        formData.append("file", file);
+      }
+      await onImportXML(formData);
       setMyFiles([]);
       onClose && onClose();
     }
@@ -68,7 +75,7 @@ const ImportData = ({ open, onClose }: IModal) => {
         <Divider />
         <Grid container spacing={2} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item sx={{ marginTop: "16px", width: "100%" }}>
-            <UploadDropzone onChange={changeHandler} myFiles={myFiles} removeAll={removeAll} removeFile={removeFile}/>
+            <UploadDropzone onChange={changeHandler} myFiles={myFiles} removeAll={removeAll} removeFile={removeFile} />
           </Grid>
           <Grid item sx={{ width: "100%" }}></Grid>
         </Grid>

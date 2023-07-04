@@ -1,5 +1,5 @@
 import { Theme, SxProps, } from "@mui/system";
-import { ButtonProps, ModalTypeMap, TextFieldProps, TypographyProps } from '@mui/material';
+import { ButtonProps, ModalTypeMap, TablePaginationProps, TextFieldProps, TypographyProps } from '@mui/material';
 import { SVGProps } from "react";
 import { DataGridProps } from "@mui/x-data-grid";
 import { DatePickerProps } from "@mui/lab";
@@ -97,4 +97,7 @@ export type IButton = ButtonProps & {
 
 // DataGrid
 export type IDataTable = DataGridProps<any> &
-  React.RefAttributes<HTMLDivElement> & { containerStyle?: ISXTheme, page: number, perPage: number };
+  React.RefAttributes<HTMLDivElement> & { containerStyle?: ISXTheme, page: number, perPage: number, total: number, loading: boolean | undefined };
+
+export type IPagination = TablePaginationProps<any> &
+  React.RefAttributes<HTMLDivElement> & { containerStyle?: ISXTheme, page: number, perPage: number, total: number, onPaginationModelChange: () => void };

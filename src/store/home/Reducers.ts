@@ -20,7 +20,6 @@ const homeSlice = createSlice({
         importXMLSuccess: (state, { payload }) => {
             return {
                 ...state,
-                data: payload,
                 error: null,
                 loading: false
             }

@@ -76,7 +76,7 @@ const columns: GridColDef[] = [
 ];
 
 const DetailXMLDataFirst = (content: any) => {  
-  return <DataTable rows={[]} columns={columns} page={0} perPage={10} />;
+  return <DataTable rows={[]} columns={columns} total={10} page={0} perPage={10} loading={false} />;
 };
 
 export default React.memo(DetailXMLDataFirst);

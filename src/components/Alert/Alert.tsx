@@ -26,7 +26,7 @@ const Alert = () => {
   return (
     <Snackbar open={!!message} autoHideDuration={duration} anchorOrigin={position} onClose={handleClose}>
       <AlertCus onClose={handleClose} severity={type}>
-        <Text>{message}</Text>
+        <Text>{message.length > 0 ? message : 'Lỗi server!' as any}</Text>
       </AlertCus>
     </Snackbar>
   );
